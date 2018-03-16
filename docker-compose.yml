@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - '.:/app'
+      - 'node_modules:/app/node_modules'
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+
+volumes:
+  node_modules:
