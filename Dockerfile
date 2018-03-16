@@ -1,4 +1,4 @@
-FROM node:9-alpine
+FROM mhart/alpine-node:9
 
 # set working directory
 WORKDIR /app
