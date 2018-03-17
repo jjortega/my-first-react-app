@@ -42,6 +42,32 @@ class App extends Component {
           )}
           </ul>
         </p>
+        <p className="Teams">
+          We have { teams.length } teams, sorted by number of developers:
+          <ul>
+          { teams.sort((a, b) => a.devs.length < b.devs.length ).map( ({ name, pms, pds, devs }) =>
+            <li key={name}>
+              Team { name } has { pms.length } PMs, { pds.length } PDs and { devs.length } Devs
+            </li>
+          )}
+          </ul>
+        </p>
+        <p className="Teams">
+          We have { teams.filter(team => team.pms.length > 1 ).length } team(s) with more than one PM, we need to split them:
+          <ul>
+          { teams.filter(team => team.pms.length > 1 ).map( ({ name, pms, pds, devs }) =>
+            <li key={name}>
+              Team { name } has { pms.length } PMs, { pds.length } PDs and { devs.length } Devs
+            </li>
+          )}
+          </ul>
+        </p>
+        <p className="Teams">
+          { teams.every(team => team.pds.length >= 1) ?
+            <span>Hooray! Every team has at least one PD! We are safe!</span> :
+            <span>Oh no! Some teams do not have a PD! Go hire some more!</span>
+          }
+        </p>
       </div>
     );
   }
