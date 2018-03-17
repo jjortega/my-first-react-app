@@ -68,6 +68,24 @@ class App extends Component {
             <span>Oh no! Some teams do not have a PD! Go hire some more!</span>
           }
         </p>
+        <p className="Teams">
+          We have a total of:
+          <ul>
+          { ['pms', 'pds', 'devs'].map(position =>
+            <li key={position}>
+              {
+                teams
+                .map(team => team[position].length)
+                .reduce((a, b) => a+b, 0)
+              } { position.slice(0, -1).toUpperCase() }{ position.slice(-1) }
+            </li>
+          )}
+          </ul>
+          For a grand total of { teams
+            .map( ({ pms, pds, devs }) => [ ...pms, ...pds, ...devs ].length )
+            .reduce((a, b) => a+b, 0)
+          } team members
+        </p>
       </div>
     );
   }
