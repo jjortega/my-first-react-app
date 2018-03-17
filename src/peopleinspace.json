@@ -1,0 +1,50 @@
+{
+  "number" : 3,
+  "people" : [
+    {
+      "name" : "Scott Tingle",
+      "biophoto" : "http://howmanypeopleareinspacerightnow.com/app/biophotos/scott-tingle.jpg",
+      "biophotowidth" : 640,
+      "biophotoheight" : 800,
+      "country" : "usa",
+      "countryflag" : "http://howmanypeopleareinspacerightnow.com/app/flags/flag-usa.jpg",
+      "launchdate" : "2017-12-17",
+      "careerdays" : 0,
+      "title" : "Flight Engineer",
+      "location" : "International Space Station",
+      "bio" : "Scott, born in Massachusetts, is a member of the 2009 astronaut class. This is the mechanical engineer’s first trip to space.",
+      "biolink" : "https://en.wikipedia.org/wiki/Scott_D._Tingle",
+      "twitter" : "https://twitter.com/Astro_Maker"
+    },
+     {
+      "name" : "Norishige Kanai",
+      "biophoto" : "http://howmanypeopleareinspacerightnow.com/app/biophotos/norishige-kanai.jpg",
+      "biophotowidth" : 640,
+      "biophotoheight" : 800,
+      "country" : "japan",
+      "countryflag" : "http://howmanypeopleareinspacerightnow.com/app/flags/flag-japan.jpg",
+      "launchdate" : "2017-12-17",
+      "careerdays" : 0,
+      "title" : "Flight Engineer",
+      "location" : "International Space Station",
+      "bio" : "This is Norishige’s first trip to space. A doctor by trade, he is also loves the traditional Japanese martial art Aikido.",
+      "biolink" : "https://en.wikipedia.org/wiki/Norishige_Kanai",
+      "twitter" : ""
+    },
+     {
+      "name" : "Anton Shkaplerov",
+      "biophoto" : "http://howmanypeopleareinspacerightnow.com/app/biophotos/anton-shkaplerov.jpg",
+      "biophotowidth" : 640,
+      "biophotoheight" : 800,
+      "country" : "russia",
+      "countryflag" : "http://howmanypeopleareinspacerightnow.com/app/flags/flag-russia.jpg",
+      "launchdate" : "2017-12-17",
+      "careerdays" : 366,
+      "title" : "Commander",
+      "location" : "International Space Station",
+      "bio" : "Air Force pilot Anton has spent more than a year in space before launching on this, his 3 trip to Low Earth Orbit.",
+      "biolink" : "https://en.wikipedia.org/wiki/Anton_Shkaplerov",
+      "twitter" : "twitter.com/Anton_Astrey"
+    }
+  ]
+}
