@@ -1,0 +1,11 @@
+.Team {
+  flex: 1;
+  border: solid 1px #ccc;
+  padding: 1em 2em;
+  background: #eee;
+}
+
+.Team li {
+  list-style: none;
+}
+
