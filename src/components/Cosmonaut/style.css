@@ -1,0 +1,26 @@
+.Person {
+  flex: 1;
+}
+
+.Pic {
+  max-width: 90%;
+  height: auto;
+}
+
+.Info {
+  padding: 10px 15px;
+  background: rgba(255,255,255,0.7);
+}
+
+.Flag {
+  border: solid 1px #ccc;
+}
+
+.Links {
+  display: flex;
+}
+
+.Links a {
+  flex: 1;
+}
+

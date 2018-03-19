@@ -22,35 +22,6 @@
   font-size: large;
 }
 
-.People {
-  display: flex;
-}
-
-.Person {
-  flex: 1;
-}
-
-.Pic {
-  max-width: 90%;
-  height: auto;
-}
-
-.Info {
-  padding: 10px 15px;
-}
-
-.Flag {
-  border: solid 1px #ccc;
-}
-
-.Links {
-  display: flex;
-}
-
-.Links a {
-  flex: 1;
-}
-
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
