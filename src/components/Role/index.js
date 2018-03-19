@@ -4,7 +4,7 @@ import './style.css';
 
 // Or a simple function
 const Role = ({ name, members }) => (
-  <div>
+  <div className="Role">
     { members.length } { name.slice(0, -1).toUpperCase() }{ name.slice(-1) }:
     { members.length === 0 ? <em> No one!!!</em> : null }
     { members.length === 1 ? <em> Warning!!! Alone!</em> : null }

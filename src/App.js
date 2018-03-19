@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import Team from './components/Team';
+import Role from './components/Role';
 import './App.css';
+
+const roles = ['pms', 'pds', 'devs'];
 
 const teams = [
   {
@@ -43,6 +46,22 @@ class App extends Component {
               pms={team.pms}
               pds={team.pds}
               devs={team.devs}
+            />
+          ) }
+        </p>
+        <p className="App-intro">
+          Roles cross team:
+        </p>
+        <p className="Roles">
+          { roles.map( role =>
+            <Role
+              key={role}
+              name={role}
+              members={
+                teams
+                .map(team => team[role])
+                .reduce((a,b) => a.concat(b), [])
+              }
             />
           ) }
         </p>
