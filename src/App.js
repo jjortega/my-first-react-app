@@ -39,7 +39,7 @@ class App extends Component {
           <h1>
             { loading ?
               'Loading, please wait...' :
-              <span>There are <strong>${ number }</strong> people in space right now</span>
+              <span>There are <strong>{ number }</strong> people in space right now</span>
             }
           </h1>
           { loading ? null : <button onClick={this.fetchData}>Maybe there are new people in space... Refresh!</button> }
