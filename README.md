@@ -293,7 +293,7 @@ Teams.defaultProps = {
 export default Teams;
 ```
 
-Notice the `PropTypes` bit. *PropTypes* are an optional feature of React, but they're highly recommended to avoid silly type error mistakes.
+See how `this.props` represents variable info that can be handed down to the component. Also notice the `PropTypes` bit. *PropTypes* are an optional feature of React, but they're highly recommended to avoid silly type error mistakes.
 
 A component can also be a standard function, like the following example:
 
@@ -325,6 +325,8 @@ Role.defaultProps = {
 
 export default Role;
 ```
+
+See how `props` in this case are just parameters to the function.
 
 You can then instantiate these components as in the following example:
 
@@ -374,4 +376,229 @@ Notice how the **Team** component uses the **Role** component. That's ok. We can
 - Tip: think about the { children } prop and how to nest components
 - Ask questions if needed
 
+## Stage 3
+Stateless components are great. If all components could be stateless, life would be much easier. Unfortunately life is complex and evil, and has a memory, so to reflect this sometimes components need to keep state.
+
+We can add state to a class-based component just by declaring a **constructor** method and creating `this.state` there.
+
+```jsx
+  constructor(props) {
+    super(props);
+    this.state = {
+      teams: initialTeams,
+      unassigned: [],
+      focusedTeam: 0,
+    };
+  }
+```
+
+State can be accessed by referring to **this.state**:
+
+```js
+  render() {
+    const {
+      teams,
+      unassigned,
+    } = this.state;
+    // MORE
+  }
+```
+
+State can now be changed by calling `this.setState` at any point in the component. This call is asynchronous and usually fired from event callbacks like **onClick** or **onChange**.
+
+```jsx
+              onClickMember={(name) => this.setState({
+                unassigned: unassigned.concat(name),
+                teams: Object.assign(teams, { [teamIndex]: {
+                    name: team.name,
+                    members: team.members.filter(member => member !== name)
+                  }
+                })
+              })}
+```
+
+or:
+
+```jsx
+            onClickMember={(name) => this.setState({
+              unassigned: unassigned.filter(member => member !== name),
+              teams: Object.assign(teams, { [indexWithLeastMembers]: {
+                  name: teamWithLeastMembers.name,
+                  members: teamWithLeastMembers.members.concat(name),
+                }
+              })
+            })}
+```
+
+Specifically for this problem we've implemented a new, flatter version of the data:
+
+```js
+const initialTeams = [
+  {
+    name: 'Carriers',
+    members: ['Javier', 'Nacho', 'Alvar', 'David', 'Dmitri', 'Iván', 'Martin', 'Vadim'],
+  },
+  {
+    name: 'Shippers',
+    members: ['Isa', 'Joa', 'Clau', 'Óscar', 'Alix', 'Antonio', 'H3', 'James', 'Nasi', 'Ricardo', 'Sotos'],
+  },
+  {
+    name: 'Ops',
+    members: ['Ramón', 'Carlos', 'Acei', 'Cas', 'Jose', 'Juan', 'Juanjo', 'Rach', 'Rafa', 'Rubén'],
+  },
+];
+```
+
+And a component to showcase the new model:
+
+```jsx
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import './style.css';
+import Role from '../Role';
+
+// A component can be a class
+class FlatTeam extends PureComponent {
+  render() {
+    const {
+      name,
+      members,
+      onClickMember,
+    } = this.props;
+
+    return (
+      <div className="Team">
+        Team-{name} has a total of { members.length } members:
+        <Role
+          name={'members'}
+          members={members}
+          onClickMember={onClickMember}
+        />
+      </div>
+    );
+  }
+}
+
+FlatTeam.propTypes = {
+  name: PropTypes.string.isRequired,
+  members: PropTypes.arrayOf(PropTypes.string),
+  onClickMember: PropTypes.func,
+};
+
+FlatTeam.defaultProps = {
+  members: [],
+  onClickMember: () => {},
+};
+
+export default FlatTeam;
+```
+
+We've also changed the **Role** component, so members can be clicked:
+
+```jsx
+const Role = ({ name, members, onClickMember }) => (
+  <div className="Role">
+    { members.length } { name.slice(0, -1).toUpperCase() }{ name.slice(-1) }:
+    { members.length === 0 ? <em> No one!!!</em> : null }
+    { members.length === 1 ? <em> Warning!!! Alone!</em> : null }
+    <ul>
+      { members.map(member => <li onClick={() => onClickMember(member)} key={member}>{ member }</li>) }
+    </ul>
+  </div>
+);
+```
+
+And allowed you to click members in teams to remove them:
+
+```jsx
+        <div className="Teams">
+          { teams.map( (team, teamIndex) =>
+            <FlatTeam
+              key={team.name}
+              name={team.name}
+              members={team.members}
+              onClickMember={(name) => this.setState({
+                unassigned: unassigned.concat(name),
+                teams: Object.assign(teams, { [teamIndex]: {
+                    name: team.name,
+                    members: team.members.filter(member => member !== name)
+                  }
+                })
+              })}
+            />
+          ) }
+        </div>
+```
+
+You can also click members on the "Unassigned" list to assign them to the team with the least amount of mebers:
+
+```js
+    const minTeamMembers = Math.min(...teams.map(team => team.members.length));
+    const indexWithLeastMembers = teams.findIndex(team => team.members.length === minTeamMembers);
+    const teamWithLeastMembers = teams[indexWithLeastMembers];
+```
+
+```jsx
+        <div className="Roles">
+          <Role
+            name={'Unassigned'}
+            members={unassigned}
+            onClickMember={(name) => this.setState({
+              unassigned: unassigned.filter(member => member !== name),
+              teams: Object.assign(teams, { [indexWithLeastMembers]: {
+                  name: teamWithLeastMembers.name,
+                  members: teamWithLeastMembers.members.concat(name),
+                }
+              })
+            })}
+          />
+        </div>
+```
+
+### Component life-cycle
+
+This is a comprehensive list of the callbacks you can declare in a class-based React component:
+
+**constructor**(_props_) is called when the component is first instantiated. It needs to call _super(props)_ and doesn’t have _this.state_ set yet.
+
+**componentWillMount**() is fired before the component is “mounted” (inserted into the DOM), but before the first _render()_.
+
+**componentDidMount**() is fired after the first _render()_. Usually you setup your component here.
+
+**componentWillReceiveProps**(_nextProps_)
+**shouldComponentUpdate**(_nextProps_, _nextState_) => _boolean_
+**componentWillUpdate**(_nextProps_, _nextState_)
+**render**()
+**componentDidUpdate**(_prevProps_, _prevState_)
+
+		These are fired in this order when a component receives new props or changes its state
+
+**componentWillUnmount**() is fired right before a component is destroyed. Useful to remove timers, subscriptions, requests…
+
+**componentDidCatch**(_error_, _info_) is fired if there’s an error
+
+You can access **this.state** and **this.props** in these lifecycle callbacks.
+
+### Exercise 3
+
+- Still on http://www.howmanypeopleareinspacerightnow.com/
+- But we don’t want a local JSON file, get dynamically from: http://www.howmanypeopleareinspacerightnow.com/peopleinspace.json
+- WARNING: the URL is CORS restricted. Let's work around it.
+- Ask questions if needed
+- Tip: Fetching something in JS can feel strange, use this:
+
+**src/utils/http.js**
+```js
+const CORS_ENDPOINT = 'http://cors.cancamusa.org/';
+const CORS_AUTH = 'Basic b250cnVjazpPblRydWNrT2Zmc2l0ZTY2Ng==';
+
+const get = (url) => (
+  fetch(CORS_ENDPOINT + url, { headers: new Headers({ 'Authorization': CORS_AUTH }) })
+  .then(result => result.json())
+);
+
+export {
+  get,
+};
+```
 
