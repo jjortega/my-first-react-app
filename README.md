@@ -234,3 +234,144 @@ Transverse the teams to find the total team members by role:
 - Tip: think about how to import a JSON file to your code
 - Ask questions if needed
 
+## Stage 2: Components
+
+*Stage 1* shows an ok way to develop a web, but it puts all the info in the same file. A key concept of React is **Components**: a way to divide the code so that it's composable and atomic. We will learn about *Components* in this stage.
+
+Components are handed down `props` from their parent. If a component renders something only depending on its props we can say it's a "pure" component. Pure components are preferred. Components can also handle state, we will see this in the next stage. There's an additional concept called "High-order components", which wrap components, but are out of scope in this tutorial.
+
+A component can be a JS(X) class, like `App` in the previous stage or the following file:
+
+**src/components/Team/index.js**
+
+```jsx
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import './style.css';
+import Role from '../Role';
+
+const roles = ['pms', 'pds', 'devs'];
+
+// A component can be a class
+class Teams extends PureComponent {
+  render() {
+    const {
+      name,
+      ...props,
+    } = this.props;
+    const total = roles
+                  .map(role => props[role].length)
+                  .reduce((a, b) => a+b, 0);
+
+    return (
+      <div className="Team">
+        Team-{name} has a total of { total } members:
+        { roles.map(role =>
+          <Role
+            name={role}
+            members={props[role]}
+          />
+        ) }
+      </div>
+    );
+  }
+}
+
+Teams.propTypes = {
+  name: PropTypes.string.isRequired,
+  pms: PropTypes.arrayOf(PropTypes.string),
+  pds: PropTypes.arrayOf(PropTypes.string),
+  devs: PropTypes.arrayOf(PropTypes.string),
+};
+
+Teams.defaultProps = {
+  pms: [],
+  pds: [],
+  devs: [],
+};
+
+export default Teams;
+```
+
+Notice the `PropTypes` bit. *PropTypes* are an optional feature of React, but they're highly recommended to avoid silly type error mistakes.
+
+A component can also be a standard function, like the following example:
+
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+import './style.css';
+
+// Or a simple function
+const Role = ({ name, members }) => (
+  <div className="Role">
+    { members.length } { name.slice(0, -1).toUpperCase() }{ name.slice(-1) }:
+    { members.length === 0 ? <em> No one!!!</em> : null }
+    { members.length === 1 ? <em> Warning!!! Alone!</em> : null }
+    <ul>
+      { members.map(member => <li key={member}>{ member }</li>) }
+    </ul>
+  </div>
+);
+
+Role.propTypes = {
+  name: PropTypes.string.isRequired,
+  members: PropTypes.arrayOf(PropTypes.string),
+};
+
+Role.defaultProps = {
+  members: [],
+};
+
+export default Role;
+```
+
+You can then instantiate these components as in the following example:
+
+```jsx
+        <p className="Teams">
+          { teams.map( team =>
+            <Team
+              key={team.name}
+              name={team.name}
+              pms={team.pms}
+              pds={team.pds}
+              devs={team.devs}
+            />
+          ) }
+        </p>
+```
+
+Notice how the **Team** component uses the **Role** component. That's ok. We can also re-use the **Role** component independently. This is a key feature of components.
+
+```jsx
+        <p className="App-intro">
+          Roles cross team:
+        </p>
+        <p className="Roles">
+          { roles.map( role =>
+            <Role
+              key={role}
+              name={role}
+              members={
+                teams
+                .map(team => team[role])
+                .reduce((a,b) => a.concat(b), [])
+              }
+            />
+          ) }
+        </p>
+```
+
+### Exercise 2
+
+- Still on http://www.howmanypeopleareinspacerightnow.com/
+- We want to clean-up our code and make composable components
+- Suggested components for:
+  - Space (to contain the rest)
+  - Astronaut (or Cosmonaut)
+  - Link
+- Tip: think about the { children } prop and how to nest components
+- Ask questions if needed
+
+
