@@ -17,13 +17,13 @@ const Cosmonaut = ({
   biolink,
   twitter,
 }) => (
-  <div class="Person" key={name}>
-    <img class="Pic" alt="pic" src={biophoto} width={biophotowidth} height={biophotoheight} />
-    <div class="Info">
-      <div>{ title } { name } from <img title={country} alt={country} class="Flag" src={countryflag} /></div>
+  <div className="Person" key={name}>
+    <img className="Pic" alt="pic" src={biophoto} width={biophotowidth} height={biophotoheight} />
+    <div className="Info">
+      <div>{ title } { name } from <img title={country} alt={country} className="Flag" src={countryflag} /></div>
       <div>At "{ location }" since { launchdate }</div>
       <div><em>{ bio }</em></div>
-      <div class="Links">
+      <div className="Links">
         <Link url={biolink} name="Bio" />
         <Link url={twitter} name="Twitter" />
       </div>
@@ -40,7 +40,7 @@ Cosmonaut.propTypes = {
   country: PropTypes.string,
   countryflag: PropTypes.string,
   launchdate: PropTypes.string.isRequired,
-  careerdates: PropTypes.string,
+  careerdates: PropTypes.number,
   location: PropTypes.string,
   bio: PropTypes.string,
   biolink: PropTypes.string,

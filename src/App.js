@@ -13,7 +13,7 @@ class App extends Component {
         </header>
         <Space>
           { space.people.map(person =>
-            <Cosmonaut {...person} />
+            <Cosmonaut key={person.name} {...person} />
           )}
         </Space>
       </div>
