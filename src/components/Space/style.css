@@ -2,5 +2,6 @@
   display: flex;
   padding: 3em 0;
   background: url(https://cdn.wallpapersafari.com/85/33/r2xaHh.jpg) repeat;
+  min-height: 100vh;
 }
 

@@ -12,6 +12,11 @@
   height: 70px;
   padding: 20px;
   color: white;
+  display: flex;
+}
+
+.App-header > * {
+  flex: 1;
 }
 
 .App-title {
